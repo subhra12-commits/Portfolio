@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Code2, Briefcase, Mail, BrainCircuit, Database, Layers, ExternalLink, Github, Linkedin, ChevronRight } from "lucide-react";
+import { ArrowUpRight, Code2, Briefcase, Mail, BrainCircuit, Database, Layers, ExternalLink, ChevronRight } from "lucide-react";
 
 // --- Data (Unchanged content, updated theme colors) ---
 const SKILLS = {
@@ -41,13 +41,19 @@ const PROJECTS = [
   }
 ];
 
+// --- Types ---
+interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
 // --- Interactive Components ---
 
-const SpotlightCard = ({ children, className = "" }) => {
+const SpotlightCard = ({ children, className = "" }: CardProps) => {
   const [mouseX, setMouseX] = useState(0);
   const [mouseY, setMouseY] = useState(0);
 
-  function onMouseMove({ currentTarget, clientX, clientY }) {
+  function onMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent<HTMLDivElement>) {
     const { left, top } = currentTarget.getBoundingClientRect();
     setMouseX(clientX - left);
     setMouseY(clientY - top);
@@ -69,7 +75,7 @@ const SpotlightCard = ({ children, className = "" }) => {
   );
 };
 
-const TiltCard = ({ children, className = "" }) => {
+const TiltCard = ({ children, className = "" }: CardProps) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseX = useSpring(x, { stiffness: 150, damping: 20 });
@@ -78,7 +84,7 @@ const TiltCard = ({ children, className = "" }) => {
   const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
   const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
 
-  function onMouseMove(e) {
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -168,11 +174,11 @@ export default function Portfolio() {
                 </a>
                 <div className="flex items-center gap-2">
                   {[
-                    { icon: <Github size={20} />, link: "https://github.com/subhra12-commits" },
-                    { icon: <Linkedin size={20} />, link: "https://www.linkedin.com/in/subhradeep-saha-51a3732a7/" },
+                    { icon: <Code2 size={20} />, link: "https://github.com/subhra12-commits" },
+                    { icon: <Briefcase size={20} />, link: "https://www.linkedin.com/in/subhradeep-saha-51a3732a7/" },
                     { icon: <Mail size={20} />, link: "mailto:rosesaha2k@gmail.com" }
                   ].map((social, i) => (
-                    <a key={i} href={social.link} target="_blank" className="p-4 rounded-2xl border border-[#2B2118]/10 dark:border-[#FFF8F0]/10 text-[#2B2118]/50 dark:text-[#FFF8F0]/50 hover:text-[#E76F2E] dark:hover:text-[#E76F2E] hover:bg-[#E76F2E]/5 transition-all">
+                    <a key={i} href={social.link} target="_blank" rel="noreferrer" className="p-4 rounded-2xl border border-[#2B2118]/10 dark:border-[#FFF8F0]/10 text-[#2B2118]/50 dark:text-[#FFF8F0]/50 hover:text-[#E76F2E] dark:hover:text-[#E76F2E] hover:bg-[#E76F2E]/5 transition-all">
                       {social.icon}
                     </a>
                   ))}
@@ -270,7 +276,7 @@ export default function Portfolio() {
                       <div className={`p-4 rounded-2xl bg-gradient-to-br ${project.color} text-[#2B2118] dark:text-[#FFF8F0]`}>
                         {project.icon}
                       </div>
-                      <a href={project.link} target="_blank" className="p-2 rounded-full hover:bg-[#E76F2E]/10 transition-colors">
+                      <a href={project.link} target="_blank" rel="noreferrer" className="p-2 rounded-full hover:bg-[#E76F2E]/10 transition-colors">
                         <ExternalLink size={18} className="text-[#2B2118]/30 dark:text-[#FFF8F0]/30 group-hover:text-[#E76F2E]" />
                       </a>
                     </div>
